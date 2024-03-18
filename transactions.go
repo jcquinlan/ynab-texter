@@ -1,7 +1,7 @@
-package transactions
+package main
 
 import (
-	"jcquinlan/ynab-texter/env"
+	"fmt"
 	"time"
 
 	"github.com/brunomvsouza/ynab.go"
@@ -9,18 +9,26 @@ import (
 	"github.com/brunomvsouza/ynab.go/api/transaction"
 )
 
-func GetRecentTransactions() ([]*transaction.Transaction, error) {
-	envVars := env.GetEnvVars()
+type ynabClient struct {
+	client ynab.ClientServicer
+}
 
-	ynabClient := ynab.NewClient(envVars["YNAB_KEY"])
+func CreateYnabClient() *ynabClient {
+	return &ynabClient{
+		client: ynab.NewClient(envVars["YNAB_KEY"]),
+	}
+}
+
+func (y *ynabClient) GetRecentTransactions() ([]*transaction.Transaction, error) {
+	fmt.Println("Getting recent transactions from YNAB...")
 	filterTime := time.Now().
-		Add(-time.Hour * 24 * 1)
+		Add(-time.Hour * 24 * 2)
 
 	transactionFilter := transaction.Filter{
 		Since: &api.Date{Time: filterTime},
 		Type:  transaction.StatusUnapproved.Pointer(),
 	}
-	transactions, err := ynabClient.Transaction().GetTransactions(
+	transactions, err := y.client.Transaction().GetTransactions(
 		envVars["BUDGET_ID"],
 		&transactionFilter,
 	)
