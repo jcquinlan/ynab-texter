@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/aws/aws-lambda-go/lambda"
 	ynabSDK "github.com/brunomvsouza/ynab.go/api/transaction"
 )
 
-func main() {
+func HandleRequest() {
 	InitEnvVars()
+	fmt.Println("env phone number", envVars["TWILIO_PHONE_NUMBER"])
 	supabase := CreateSupabaseClient()
 	ynab := CreateYnabClient()
 	messaging := InitMessagingClient()
@@ -67,5 +70,15 @@ func main() {
 		if len(insertedTransactionRecords) > 0 {
 			messaging.SendTransactionMessage(transaction)
 		}
+	}
+}
+
+func main() {
+	if os.Getenv("AWS_LAMBDA_FUNCTION_NAME") != "" {
+		fmt.Println("Running in AWS Lambda")
+		lambda.Start(HandleRequest)
+	} else {
+		fmt.Println("Running locally")
+		HandleRequest()
 	}
 }

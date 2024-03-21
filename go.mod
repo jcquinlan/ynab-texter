@@ -3,6 +3,7 @@ module jcquinlan/ynab-texter
 go 1.22.0
 
 require (
+	github.com/aws/aws-lambda-go v1.46.0 // indirect
 	github.com/brunomvsouza/ynab.go v1.4.0 // indirect
 	github.com/go-chi/chi/v5 v5.0.12 // indirect
 	github.com/golang/mock v1.6.0 // indirect
