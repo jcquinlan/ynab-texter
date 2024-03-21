@@ -10,7 +10,6 @@ import (
 
 func HandleRequest() {
 	InitEnvVars()
-	fmt.Println("env phone number", envVars["TWILIO_PHONE_NUMBER"])
 	supabase := CreateSupabaseClient()
 	ynab := CreateYnabClient()
 	messaging := InitMessagingClient()
