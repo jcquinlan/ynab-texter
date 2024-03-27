@@ -6,13 +6,14 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 	ynabSDK "github.com/brunomvsouza/ynab.go/api/transaction"
+	internal "github.com/jcquinlan/ynab-texter/internal"
 )
 
 func HandleRequest() {
-	InitEnvVars()
-	supabase := CreateSupabaseClient()
-	ynab := CreateYnabClient()
-	messaging := InitMessagingClient()
+	internal.InitEnvVars()
+	supabase := internal.CreateSupabaseClient()
+	ynab := internal.CreateYnabClient()
+	messaging := internal.InitMessagingClient()
 
 	recentTransactions, err := ynab.GetRecentTransactions()
 	if err != nil {
@@ -57,7 +58,7 @@ func HandleRequest() {
 	}
 
 	for _, transaction := range newRecentTransactions {
-		newTransactionRecord := TransactionRecordDTO{
+		newTransactionRecord := internal.TransactionRecordDTO{
 			TransactionId: transaction.ID,
 		}
 

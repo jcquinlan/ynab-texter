@@ -1,4 +1,4 @@
-module jcquinlan/ynab-texter
+module github.com/jcquinlan/ynab-texter
 
 go 1.22.0
 
@@ -14,3 +14,5 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/twilio/twilio-go v1.19.0 // indirect
 )
+
+replace github.com/jcquinlan/ynab-texter/internal => ./internal
